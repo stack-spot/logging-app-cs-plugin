@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using StackSpot.Logging;
 
-namespace {{inputs.project_name}}.Api;
+namespace {{project_name}}.Api;
 
 [ExcludeFromCodeCoverage]
 public static class ConfigurationStackSpot
