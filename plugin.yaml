@@ -1,0 +1,22 @@
+name: skynet-dotnet-logging-app-cs-plugin
+description: Plugin to configure logging on project
+types:
+  - app
+inputs:
+  - label: Set Log Level
+    type: text
+    default: "INFO"
+    name: log_level
+    items:
+      - "INFO"
+      - "DEBUG"
+      - "WARN"
+      - "ERROR"
+      - "FATAL"      
+  - label: Add Info in log
+    type: multiselect
+    name: log_extension
+    items:
+      - "OpenTracing"
+      - "XRay"
+      - "CorrelationId"

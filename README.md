@@ -1,1 +1,0 @@
-# logging-app-cs-plugin
