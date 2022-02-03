@@ -5,7 +5,7 @@ import subprocess
 import json
 import os
 
-def put_appsettings(project_name: str, target_path: str, file_name: str):
+def put_appsettings(project_name: str, target_path: str, log_level: str, file_name: str):
         os.chdir(f'{target_path}/src/{project_name}.Api/')
         print(f'Setting {file_name}...')
 
@@ -13,7 +13,7 @@ def put_appsettings(project_name: str, target_path: str, file_name: str):
             appsettings_json_content = json.load(appsettings_json_file)
             appsettings_json_content.update({
                                                 "LogOptions": {
-                                                    "LogLevel": "inputs.log_level"
+                                                    "LogLevel": f"{log_level}"
                                                 } 
                                             })                                         
             appsettings_json_file.seek(0)
@@ -23,11 +23,12 @@ def put_appsettings(project_name: str, target_path: str, file_name: str):
 class Plugin(Template):
     def post_hook(self, metadata: Metadata):
         project_name = metadata.global_inputs['project_name']
+        log_level = metadata.inputs['log_level']
         using = f"using StackSpot.Logging;\n"
         service = f"services.AddLogger(configuration)\n"
         
-        put_appsettings(project_name, metadata.target_path, 'appsettings.json')
-        put_appsettings(project_name, metadata.target_path, 'appsettings.Development.json')   
+        put_appsettings(project_name, metadata.target_path, log_level, 'appsettings.json')
+        put_appsettings(project_name, metadata.target_path, log_level, 'appsettings.Development.json')   
 
         os.chdir(f'{metadata.target_path}/src/{project_name}.Domain/')
         subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging'])
