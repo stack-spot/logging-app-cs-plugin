@@ -1,1 +1,0 @@
-# skynet-dotnet-logging-app-cs-plugin
