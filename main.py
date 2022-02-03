@@ -36,17 +36,17 @@ class Plugin(Template):
         if 'OpenTracing' in metadata.inputs['log_extension']:
             subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging.OpenTracing'])
             using = f"{using}using StackSpot.Logging.OpenTracing;\n"
-            service = f"{service}.WithOpenTracing()\n"
+            service = f"{service}.WithOpenTracing()"
        
         if 'XRay' in metadata.inputs['log_extension']:
             subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging.XRay'])             
-            using = f"{using}\nusing StackSpot.Logging.XRay;\n"
-            service = f"{service}.WithXRayTraceId()\n"
+            using = f"{using}using StackSpot.Logging.XRay;\n"
+            service = f"{service}.WithXRayTraceId()"
 
         if 'CorrelationId' in metadata.inputs['log_extension']:
             subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging.Correlation'])  
-            using = f"{using}\nusing StackSpot.Logging.Correlation;\n" 
-            service = f"{service}.WithCorrelation()\n" 
+            using = f"{using}using StackSpot.Logging.Correlation;\n" 
+            service = f"{service}.WithCorrelation()" 
         
         print('Setting Configuration...')
 
@@ -61,7 +61,12 @@ class Plugin(Template):
         configuration_file.writelines(content)
         configuration_file.close()
 
-        print('Setting Configuration done.')    
+        print('Setting Configuration done.') 
+
+        print('Apply dotnet format...')
+        os.chdir(f'{metadata.target_path}/')
+        subprocess.run(['dotnet', 'format', './src'])   
+        print('Apply dotnet format done...')
 
 if __name__ == '__main__':
     run(Plugin())
