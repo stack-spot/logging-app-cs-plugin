@@ -25,7 +25,7 @@ class Plugin(Template):
         project_name = metadata.global_inputs['project_name']
         log_level = metadata.inputs['log_level']
         using = f"using StackSpot.Logging;\n"
-        service = f"services.AddLogger(configuration)\n"
+        service = f"services.AddLogger(configuration)"
         
         put_appsettings(project_name, metadata.target_path, log_level, 'appsettings.json')
         put_appsettings(project_name, metadata.target_path, log_level, 'appsettings.Development.json')   
