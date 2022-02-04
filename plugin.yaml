@@ -1,4 +1,4 @@
-name: skynet-dotnet-logging-app-cs-plugin
+name: logging-app-cs-plugin
 description: Plugin to configure logging on project
 types:
   - app
