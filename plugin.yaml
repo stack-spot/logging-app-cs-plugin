@@ -20,3 +20,23 @@ inputs:
       - "OpenTracing"
       - "XRay"
       - "CorrelationId"
+
+displayName: Logging - Plugin
+
+picture: "plugin.png"
+
+category: backend, observability
+
+compatibility:
+  - net5.0
+  - net6.0
+
+about: about.md
+
+usage: usage.md
+
+useCase: useCase.md
+
+implementation: implementation.md
+
+technologies: [".NET", "C#", "Splunk"]
