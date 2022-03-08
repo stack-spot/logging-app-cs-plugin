@@ -1,6 +1,4 @@
-## **Implementação**
-
-### **Inputs**
+#### **Inputs**
 
 Os inputs necessários para utilizar o plugin são:
 | **Campo** | **Valor** | **Descrição** |
@@ -41,7 +39,7 @@ Quando executar na máquina local, você pode configurar as variáveis de ambien
   }
 }
 ```
-### **Configurações**
+#### **Configurações**
 Adicione ao seu `IServiceCollection` via `services.AddLogger()` no `Startup` da aplicação ou `Program`. 
 
 Utilizando váriavel de ambiente
@@ -74,7 +72,7 @@ services.AddLogger()
         .WithCorrelation();
 ```
 
-### **Implementação**
+#### **Implementação**
 
 Estendemos os métodos do `ILogger<>` transformado o output, adicionalmente estamos provendo duas sobrecargas novas para suportar TAGs e log de Objetos no campo Data.
 
@@ -100,7 +98,7 @@ public class SampleController : ControllerBase
 }
 ```
 
-### Sobrecargas disponíveis.
+#### Sobrecargas disponíveis
 
 Debug
 
@@ -142,7 +140,7 @@ _logger.LogFatal("My ERROR Log Message", "Tag01", "Tag02");
 _logger.LogFatal("My ERROR Log Message", someEntity, "Tag01", "Tag02");
 ```
 
-### Output completo
+#### Output completo
 
 Mostramos abaixo o output completo preenchido com informações do dotnet.
 
