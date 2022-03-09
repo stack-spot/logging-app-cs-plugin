@@ -72,8 +72,6 @@ services.AddLogger()
         .WithCorrelation();
 ```
 
-#### **Implementação**
-
 Estendemos os métodos do `ILogger<>` transformado o output, adicionalmente estamos provendo duas sobrecargas novas para suportar TAGs e log de Objetos no campo Data.
 
 ```csharp

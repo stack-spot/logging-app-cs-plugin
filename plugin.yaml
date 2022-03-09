@@ -1,5 +1,5 @@
 name: logging-app-cs-plugin
-description: Plugin to configure logging on project
+description: Plugin para configurar o log em seu projeto.
 types:
   - app
 inputs:
