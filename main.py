@@ -65,7 +65,7 @@ class Plugin(Template):
 
         print('Apply dotnet format...')
         os.chdir(f'{metadata.target_path}/')
-        subprocess.run(['dotnet', 'format', './src'])   
+        subprocess.run(['dotnet', 'dotnet-format', './src'])   
         print('Apply dotnet format done...')
 
 if __name__ == '__main__':

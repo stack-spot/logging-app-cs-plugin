@@ -21,7 +21,7 @@ inputs:
       - "XRay"
       - "CorrelationId"
 
-displayName: Logging - Plugin
+displayName: Logging
 
 picture: "plugin.png"
 
