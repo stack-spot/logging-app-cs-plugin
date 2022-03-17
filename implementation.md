@@ -6,9 +6,6 @@ Os inputs necessários para utilizar o plugin são:
 | AppName |  |  Nome da Aplicação |
 | Log Level| Padrão: "INFO" | level de log, valores: DEBUG, INFO, WARN, ERROR, FATAL. |
 
-* APP_NAME - nome da aplicação - Campo Obrigatório
-* LOG_LEVEL - level de log, valores: DEBUG, INFO, WARN, ERROR, FATAL. 
-
 Você pode configurar as variáveis no arquivo `appsettings.json`.
 
 ```json
