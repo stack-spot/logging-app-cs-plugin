@@ -5,8 +5,8 @@ import subprocess
 import json
 import os
 
-def put_appsettings(project_name: str, target_path: str, log_level: str, file_name: str):
-        os.chdir(f'{target_path}/src/{project_name}.Api/')
+def put_appsettings(target_path: str, log_level: str, file_name: str):
+        os.chdir(target_path)
         print(f'Setting {file_name}...')
 
         with open(file=file_name, encoding='utf-8-sig', mode='r+') as appsettings_json_file:
@@ -24,40 +24,42 @@ class Plugin(Template):
     def post_hook(self, metadata: Metadata):
         project_name = metadata.global_inputs['project_name']
         log_level = metadata.inputs['log_level']
-        using = f"using StackSpot.Logging;\n"
+        using = f"using StackSpot.Logging;"
         service = f"services.AddLogger(configuration)"
         
-        put_appsettings(project_name, metadata.target_path, log_level, 'appsettings.json')
-        put_appsettings(project_name, metadata.target_path, log_level, 'appsettings.Development.json')   
+        put_appsettings(f'{metadata.target_path}/src/{project_name}.Api/', log_level, 'appsettings.json')
+        put_appsettings(f'{metadata.target_path}/src/{project_name}.Api/', log_level, 'appsettings.Development.json')   
+        put_appsettings(f'{metadata.target_path}/tests/{project_name}.Api.IntegrationTests/', log_level, 'appsettings.json')
 
-        os.chdir(f'{metadata.target_path}/src/{project_name}.Domain/')
+        os.chdir(f'{metadata.target_path}/src/{project_name}.Application/')
         subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging'])
 
         if 'OpenTracing' in metadata.inputs['log_extension']:
             subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging.OpenTracing'])
-            using = f"{using}using StackSpot.Logging.OpenTracing;\n"
+            using = f"{using}using StackSpot.Logging.OpenTracing;"
             service = f"{service}.WithOpenTracing()"
        
         if 'XRay' in metadata.inputs['log_extension']:
             subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging.XRay'])             
-            using = f"{using}using StackSpot.Logging.XRay;\n"
+            using = f"{using}using StackSpot.Logging.XRay;"
             service = f"{service}.WithXRayTraceId()"
 
         if 'CorrelationId' in metadata.inputs['log_extension']:
             subprocess.run(['dotnet', 'add', 'package', 'StackSpot.Logging.Correlation'])  
-            using = f"{using}using StackSpot.Logging.Correlation;\n" 
+            using = f"{using}using StackSpot.Logging.Correlation;" 
             service = f"{service}.WithCorrelation()" 
         
         print('Setting Configuration...')
 
-        os.chdir(f'{metadata.target_path}/src/{project_name}.Api/')
-        configuration_file = open(file='ConfigurationStackSpot.cs', mode='r')
+        os.chdir(f'{metadata.target_path}/src/{project_name}.Application/Common/StackSpot/')
+        configuration_file = open(file='DependencyInjection.cs', mode='r')
         content = configuration_file.readlines()
+        index_using = [x for x in range(len(content)) if 'using' in content[x].lower()]
         index = [x for x in range(len(content)) if 'return services' in content[x].lower()]
-        content[0] = using+content[0]
+        content[index_using[0]] = f"{using}\n{content[index_using[0]]}"
         content[index[0]] = f"{service};\n{content[index[0]]}"
         
-        configuration_file = open(file='ConfigurationStackSpot.cs', mode='w')                     
+        configuration_file = open(file='DependencyInjection.cs', mode='w')                     
         configuration_file.writelines(content)
         configuration_file.close()
 
@@ -65,7 +67,7 @@ class Plugin(Template):
 
         print('Apply dotnet format...')
         os.chdir(f'{metadata.target_path}/')
-        subprocess.run(['dotnet', 'dotnet-format', './src'])   
+        subprocess.run(['dotnet', 'dotnet-format', f'src/{project_name}.Application/{project_name}.Application.csproj', '--include-generated'])   
         print('Apply dotnet format done...')
 
 if __name__ == '__main__':
