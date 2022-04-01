@@ -21,6 +21,69 @@ inputs:
       - "XRay"
       - "CorrelationId"
 
+computedInputs:
+  "package_opentracing": "{% if 'OpenTracing' in inputs.log_extension %}{{'add package StackSpot.Logging.OpenTracing'}}{% else %}{{'--version'}}{% endif %}"
+  "package_xRay": "{% if 'XRay' in inputs.log_extension %}{{'add package StackSpot.Logging.XRay'}}{% else %}{{'--version'}}{% endif %}"
+  "package_correlationId": "{% if 'CorrelationId' in inputs.log_extension %}{{'add package StackSpot.Logging.Correlation'}}{% else %}{{'--version'}}{% endif %}"  
+  "using_opentracing": "{% if 'OpenTracing' in inputs.log_extension %}{{'using StackSpot.Logging.OpenTracing;'}}{% endif %}"
+  "using_xRay": "{% if 'XRay' in inputs.log_extension %}{{'using StackSpot.Logging.XRay;'}}{% endif %}"
+  "using_correlationId": "{% if 'CorrelationId' in inputs.log_extension %}{{'using StackSpot.Logging.Correlation;'}}{% endif %}"
+  "service_opentracing": "{% if 'OpenTracing' in inputs.log_extension %}{{'.WithOpenTracing()'}}{% endif %}"
+  "service_xRay": "{% if 'XRay' in inputs.log_extension %}{{'.WithXRayTraceId()'}}{% endif %}"
+  "service_correlationId": "{% if 'CorrelationId' in inputs.log_extension %}{{'.WithCorrelation()'}}{% endif %}"
+
+hooks:
+#package
+  - type: run
+    trigger: before-render
+    working-dir: src/{{global_inputs.project_name}}.Application
+    commands:
+      - dotnet add package StackSpot.Logging
+      - dotnet {{computed_inputs.package_opentracing}}
+      - dotnet {{computed_inputs.package_xRay}}
+      - dotnet {{computed_inputs.package_correlationId}}      
+#dependencyinjection
+  - type: edit
+    trigger: before-render
+    path: "src/{{project_name}}.Application/Common/StackSpot/DependencyInjection.cs"
+    changes:
+      - search:
+          string: "using"
+          insert-before:
+            value: "using StackSpot.Logging;"
+          when:
+            not-exists: "using StackSpot.Logging;"
+      - search:
+          string: "using"
+          insert-before:
+            value: "{{computed_inputs.using_opentracing}}"
+          when:
+            not-exists: "{{computed_inputs.using_opentracing}}"
+      - search:
+          string: "using"
+          insert-before:
+            value: "{{computed_inputs.using_xRay}}"
+          when:
+            not-exists: "{{computed_inputs.using_xRay}}"    
+      - search:
+          string: "using"
+          insert-before:
+            value: "{{computed_inputs.using_correlationId}}"
+          when:
+            not-exists: "{{computed_inputs.using_correlationId}}"                            
+      - search:
+          string: "return services"
+          insert-before:
+            value: "services.AddLogger(configuration){{computed_inputs.service_opentracing}}{{computed_inputs.service_xRay}}{{computed_inputs.service_correlationId}};\n" 
+          when:
+            not-exists: "services.AddLogger(configuration)"
+#format
+  - type: run
+    trigger: after-render
+    working-dir: src/{{project_name}}.Application
+    commands:
+      -  dotnet dotnet-format --include-generated
+
 displayName: Logging
 
 picture: "plugin.png"
