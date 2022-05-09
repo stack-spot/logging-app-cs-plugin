@@ -1,6 +1,6 @@
 ### **Pré-requisitos**
-Para utilizar esse plugin é necessário ter uma stack dotnet criada pelo cli do StackSpot que você pode baixar [**aqui**](https://stackspot.com.br/).
+Para utilizar este plugin é necessário ter uma Stack DotNET criada pelo CLI do StackSpot que você pode baixar [**aqui**](https://stackspot.com.br/).
 
-Ter instalado:
+Também ter instalado:  
 - .NET 5 ou 6 
-- O template `rest-app-cs-template` ou o `worker-app-cs-template` já deverá estar aplicado para você conseguir utilizar este plugin.
+- O template **`rest-app-cs-template`** ou o **`worker-app-cs-template`** já deverão estar aplicados para que seja possível usar este plugin.

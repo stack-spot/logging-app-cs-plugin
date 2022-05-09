@@ -6,7 +6,7 @@ Os inputs necessários para utilizar o plugin são:
 | AppName |  |  Nome da Aplicação |
 | Log Level| Padrão: "INFO" | level de log, valores: DEBUG, INFO, WARN, ERROR, FATAL. |
 
-Você pode configurar as variáveis no arquivo `appsettings.json`.
+Você pode configurar as variáveis no arquivo **`appsettings.json`**.
 
 ```json
 {
@@ -16,7 +16,7 @@ Você pode configurar as variáveis no arquivo `appsettings.json`.
   }
 }
 ```
-Quando executar na máquina local, você pode configurar as variáveis de ambientes no arquivo `launchSettings.json`.
+Quando o plugin for executado na máquina local, é possível configurar as variáveis de ambientes no arquivo **`launchSettings.json`**.
 
 ```json
 {
@@ -37,15 +37,15 @@ Quando executar na máquina local, você pode configurar as variáveis de ambien
 }
 ```
 #### **Configurações**
-Adicione ao seu `IServiceCollection` via `services.AddLogger()` no `Startup` da aplicação ou `Program`. 
+Adicione ao seu **`IServiceCollection`**, via `services.AddLogger()`, no `Startup` da aplicação ou `Program`, as seguintes configurações: 
 
-Utilizando váriavel de ambiente
+Utilizando váriavel de ambiente:  
 
 ```csharp
 services.AddLogger();
 ```
 
-Utilizando `appsettings.json`
+Utilizando `appsettings.json`: 
 
 ```csharp
 services.AddLogger(Configuration);
@@ -69,7 +69,7 @@ services.AddLogger()
         .WithCorrelation();
 ```
 
-Estendemos os métodos do `ILogger<>` transformado o output, adicionalmente estamos provendo duas sobrecargas novas para suportar TAGs e log de Objetos no campo Data.
+Estendemos os métodos do `ILogger<>` transformando o output, adicionalmente estão sendo providas duas novas sobrecargas para suportar TAGs e log de Objetos no campo Data. Confira abaixo:  
 
 ```csharp
 [ApiController]
@@ -137,7 +137,7 @@ _logger.LogFatal("My ERROR Log Message", someEntity, "Tag01", "Tag02");
 
 #### Output completo
 
-Mostramos abaixo o output completo preenchido com informações do dotnet.
+Confira o output completo preenchido com informações de DotNET.
 
 ```json
 {
